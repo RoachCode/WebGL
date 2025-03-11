@@ -37,12 +37,13 @@ function initPositionBuffer(gl)
 function initBuffers(gl)
 {
     const positionBuffer = initPositionBuffer(gl);
-    const colorBuffer = initColorBuffer(gl);
+    //const colorBuffer = initColorBuffer(gl);
+    const textureCoordBuffer = initTextureBuffer(gl);
     const indexBuffer = initIndexBuffer(gl);
 
     return{
         position: positionBuffer,
-        color: colorBuffer,
+        textureCoord: textureCoordBuffer,
         indices: indexBuffer
     };
 }
@@ -51,12 +52,12 @@ function initColorBuffer(gl)
 {
     const faceColors =
     [
-        [1.0, 1.0, 1.0, 1.0], // Front face: white
-        [1.0, 0.0, 0.0, 1.0], // Back face: red
-        [0.0, 1.0, 0.0, 1.0], // Top face: green
-        [0.0, 0.0, 1.0, 1.0], // Bottom face: blue
-        [1.0, 1.0, 0.0, 1.0], // Right face: yellow
-        [1.0, 0.0, 1.0, 1.0], // Left face: purple
+        [0.1, 0.0, 0.0, 1.0], // Front face
+        [0.2, 0.0, 0.0, 1.0], // Back face
+        [0.3, 0.0, 0.0, 1.0], // Top face
+        [0.4, 0.0, 0.0, 1.0], // Bottom face
+        [0.5, 0.0, 0.0, 1.0], // Right face
+        [0.6, 0.0, 0.0, 1.0], // Left face
     ];
 
     // Convert the array of colors into a table for all the vertices.
@@ -131,5 +132,36 @@ function initIndexBuffer(gl)
   
     return indexBuffer;
 }
+
+function initTextureBuffer(gl)
+{
+    const textureCoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+  
+    const textureCoordinates =
+    [
+        // Front
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+        // Back
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+        // Top
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+        // Bottom
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+        // Right
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+        // Left
+        0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0,
+    ];
+  
+    gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array(textureCoordinates),
+        gl.STATIC_DRAW,
+    );
+  
+    return textureCoordBuffer;
+}
+  
 
 export { initBuffers };
