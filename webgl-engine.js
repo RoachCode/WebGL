@@ -4,6 +4,9 @@ import { vsSource, fsSource, initShaderProgram } from "./shaders.js";
 
 function main()
 {
+    let cubeRotation = 0.0;
+    let deltaTime = 0;
+
     // Get gl context
     const canvas = document.querySelector('#glcanvas');
     canvas.width = window.innerWidth;
@@ -39,8 +42,21 @@ function main()
     // Build all the objects we'll be drawing.
     const buffers = initBuffers(gl);
 
-    // Draw the scene
-    drawScene(gl, programInfo, buffers);
+    // Draw the scene repeatedly
+    let then = 0;
+    function render(now)
+    {
+        now *= 0.001; // convert to seconds
+        deltaTime = now - then;
+        then = now;
+
+        drawScene(gl, programInfo, buffers, cubeRotation);
+        cubeRotation += deltaTime;
+
+        requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
 }
 
 main();
